@@ -266,9 +266,15 @@ dat.controllers.Controller = (function (common) {
          * @param {Object} newValue The new value of <code>object[property]</code>
          */
         setValue: function(newValue) {
-          this.object[this.property] = newValue;
-          if (this.__onChange) {
-            this.__onChange.call(this, newValue);
+          // Record value before overwriting, allow `onChange` to perform validation.
+          var previousValue = this.object[this.property];
+          try {
+            this.object[this.property] = newValue;
+            if (this.__onChange) {
+              this.__onChange.call(this, newValue, previousValue);
+            }
+          } catch (e) {
+            this.object[this.property] = previousValue;
           }
           this.updateDisplay();
           return this;
