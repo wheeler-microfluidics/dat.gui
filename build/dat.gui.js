@@ -191,6 +191,7 @@ dat.controllers.Controller = (function (common) {
   var Controller = function(object, property) {
 
     this.initialValue = object[property];
+    this.currentValue = this.initialValue;
 
     /**
      * Those who extend this class will put their DOM elements in here.
@@ -222,8 +223,17 @@ dat.controllers.Controller = (function (common) {
      * @type {Function}
      * @ignore
      */
-    this.__onFinishChange = undefined;
-
+    this.___onFinishChange = undefined;
+    this.__onFinishChange = function (newValue) {
+      if (this.___onFinishChange) {
+        try {
+          this.___onFinishChange.call(this, newValue);
+        	this.currentValue = newValue;
+        } catch (e) {
+        	this.setValue(this.currentValue);
+        }
+      }
+    };
   };
 
   common.extend(
@@ -256,7 +266,7 @@ dat.controllers.Controller = (function (common) {
          * @returns {dat.controllers.Controller} this
          */
         onFinishChange: function(fnc) {
-          this.__onFinishChange = fnc;
+          this.___onFinishChange = fnc;
           return this;
         },
 
