@@ -1,4 +1,3 @@
-![https://ci.appveyor.com/api/projects/status/github/wheeler-microfluidics/dat.gui?branch=master&svg=true](https://ci.appveyor.com/api/projects/status/github/wheeler-microfluidics/dat.gui?branch=master&svg=true)
 #dat.GUI
 A lightweight graphical user interface for changing variables in JavaScript. 
 
